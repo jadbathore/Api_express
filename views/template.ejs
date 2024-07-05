@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .primary-container
+        {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+        .primary-container div {
+            display: flex;
+            justify-content: space-between;
+        }
+        .uri{
+            display: flex;
+            margin: 10px;
+            padding: 10px;
+            border: 1px black solid;
+            min-width: 10px;
+            max-width: 100%;
+            justify-content: space-between;
+        }
+
+    </style>
+</head>
+<body>
+        <h1>formuler un uri via input</h1>
+        <div class="primary-container">
+            <div>
+                <label for="name">nom du film</label>
+                <input type="text" id="name">
+            </div>
+            <div>
+                <label for="duration">durée</label>
+                <input type="text" name="duration">
+            </div>
+            <div>
+                <label for="director">directeur</label>
+                <input type="text" name="director">
+            </div>
+            <div>
+                <label for="scriptwriter">sénariste</label>
+                <input type="text" name="scriptwriter">
+            </div>
+            </div>
+        <div class="uri">
+            <p id="get_uri"></p>
+            <button id="uri_copy">copy url</button>
+        </div>
+<script>
+
+const map = new Map()
+const uri_context = document.getElementById('get_uri')
+const copy_btn = document.getElementById('uri_copy')
+const inputs = document.querySelectorAll('.primary-container input')
+inputs.forEach((input,key)=>{
+    input.addEventListener('input',(event)=>{
+        map.set(key,input.value)
+        setInterval(make_uri,500,map)
+    })
+})
+function make_uri(map)
+{
+uri_context.textContent = `item/${map.get(0)}/${map.get(1)}/${map.get(2)}/${map.get(3)}`
+}
+
+copy_btn.addEventListener('click',()=>{
+    const storage = document.createElement('textarea')
+    storage.value = uri_context.textContent;
+    uri_context.appendChild(storage);
+    storage.select();
+    storage.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    copy_btn.innerText = 'copy'
+    uri_context.removeChild(storage)
+})
+</script>
+</body>
+</html>
